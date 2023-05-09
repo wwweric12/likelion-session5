@@ -4,6 +4,7 @@ import Modal from "./components/Modal";
 import { DATA } from "./assets/Data";
 import { useState } from "react";
 import styled from "styled-components";
+import Header from "./components/Header";
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -12,22 +13,11 @@ function App() {
   };
   return (
     <>
-      <BackgroundModel props={login}>
-        <Main login={handleLogin} state={login} />
-        {login && <Modal />}
-      </BackgroundModel>
+      <Header login={handleLogin} />
+      <Main data={DATA} />
+      {login && <Modal login={handleLogin} isLogin={login} />}
     </>
   );
 }
 
 export default App;
-
-const BackgroundModel = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: ${(props) =>
-    props.props ? "rgba(0, 0, 0, 0.3)" : "white"};
-`;

@@ -5,56 +5,72 @@ import twitter from "../assets/image/icon_twitter.png";
 import google from "../assets/image/icon_google.png";
 import styled from "styled-components";
 
-const Modal = () => {
+const Modal = ({ login, isLogin }) => {
+  const handleClosed = () => {
+    login();
+  };
   return (
-    <Model>
-      <LogoImg></LogoImg>
-      <LoginText>로그인</LoginText>
-      <LoginForm>
-        <LoginInput placeholder="이메일"></LoginInput>
-        <LoginInput placeholder="비밀번호"></LoginInput>
-        <LoginButton>로그인</LoginButton>
-      </LoginForm>
-      <LoginLink href="#">비밀번호를 잊어버리셨나요?</LoginLink>
-      <p>
-        계정이 없으신가요?<LoginLink href="#"> 회원가입</LoginLink>
-      </p>
-      <LineContainer>
-        <Line></Line>
-        <div>OR</div>
-        <Line></Line>
-      </LineContainer>
+    <BackgroundModel login={isLogin}>
+      <Model>
+        <CloseButton onClick={handleClosed}>X</CloseButton>
+        <LogoImg></LogoImg>
+        <LoginText>로그인</LoginText>
+        <LoginForm>
+          <LoginInput placeholder="이메일"></LoginInput>
+          <LoginInput placeholder="비밀번호"></LoginInput>
+          <LoginButton>로그인</LoginButton>
+        </LoginForm>
+        <LoginLink href="#">비밀번호를 잊어버리셨나요?</LoginLink>
+        <p>
+          계정이 없으신가요?<LoginLink href="#"> 회원가입</LoginLink>
+        </p>
+        <LineContainer>
+          <Line></Line>
+          <div>OR</div>
+          <Line></Line>
+        </LineContainer>
 
-      <LoginImgUl>
-        <LoginImgLi>
-          <LoginImgButton>
-            <img src={kakao}></img>
-          </LoginImgButton>
-        </LoginImgLi>
-        <LoginImgLi>
-          <LoginImgButton>
-            <img src={line}></img>
-          </LoginImgButton>
-        </LoginImgLi>
-        <LoginImgLi>
-          <LoginImgButton>
-            <img src={twitter}></img>
-          </LoginImgButton>
-        </LoginImgLi>
-        <LoginImgLi>
-          <LoginImgButton>
-            <img src={google}></img>
-          </LoginImgButton>
-        </LoginImgLi>
-      </LoginImgUl>
-      <LoginTip>
-        TIP.왓챠 계정이 있으신가요? 왓챠와 왓챠피디아는 같은 계정을 사용해요.
-      </LoginTip>
-    </Model>
+        <LoginImgUl>
+          <LoginImgLi>
+            <LoginImgButton>
+              <img src={kakao} alt="카카오톡"></img>
+            </LoginImgButton>
+          </LoginImgLi>
+          <LoginImgLi>
+            <LoginImgButton>
+              <img src={line} alt="라인"></img>
+            </LoginImgButton>
+          </LoginImgLi>
+          <LoginImgLi>
+            <LoginImgButton>
+              <img src={twitter} alt="트위터"></img>
+            </LoginImgButton>
+          </LoginImgLi>
+          <LoginImgLi>
+            <LoginImgButton>
+              <img src={google} alt="구글"></img>
+            </LoginImgButton>
+          </LoginImgLi>
+        </LoginImgUl>
+        <LoginTip>
+          TIP.왓챠 계정이 있으신가요? 왓챠와 왓챠피디아는 같은 계정을 사용해요.
+        </LoginTip>
+      </Model>
+    </BackgroundModel>
   );
 };
 
 export default Modal;
+
+const BackgroundModel = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 98;
+  background-color: ${({ login }) => (login ? "rgba(0, 0, 0, 0.56)" : "")};
+`;
 
 const Model = styled.div`
   width: 375px;
@@ -64,10 +80,10 @@ const Model = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 6px;
-  margin: auto;
+  margin: 100px auto;
   overflow: hidden;
-  border: 1px solid black;
-  padding: 30px 10px;
+  z-index: 100;
+  padding: 10px 10px;
   background-color: white;
 `;
 
@@ -76,10 +92,12 @@ const LogoImg = styled.img.attrs({
 })`
   width: 198px;
   height: auto;
+  margin-bottom: 20px;
 `;
 
 const LoginText = styled.h2`
   font-size: 18px;
+  margin-bottom: 20px;
 `;
 
 const LoginForm = styled.form`
@@ -105,14 +123,14 @@ const LoginButton = styled.button`
   font-weight: bold;
   text-align: center;
   background: rgb(255, 47, 110);
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 const LoginLink = styled.a`
   font-size: 18px;
   color: rgb(255, 47, 110);
   text-decoration: none;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 `;
 
 const Line = styled.div`
@@ -152,4 +170,14 @@ const LoginTip = styled.div`
   background-color: rgb(247, 247, 247);
   color: rgb(140, 140, 140);
   padding: 20px;
+`;
+
+const CloseButton = styled.button`
+  background-color: transparent;
+  color: gray;
+  width: 30px;
+  height: 30px;
+  border: none;
+  align-self: end;
+  margin: 0 20px 20px 0;
 `;
