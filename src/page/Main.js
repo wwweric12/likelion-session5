@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Movie from "../components/Movie";
 
 const Main = ({ data }) => {
+  console.log(window.scrollX);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
@@ -26,7 +27,7 @@ const Main = ({ data }) => {
       if (window.scrollX <= 10) {
         setShowLeftButton(true);
         setShowRightButton(false);
-      } else if (window.scrollX >= 1900) {
+      } else if (window.scrollX >= 1000) {
         setShowLeftButton(false);
         setShowRightButton(true);
       } else {

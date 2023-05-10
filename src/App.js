@@ -3,7 +3,7 @@ import Main from "./page/Main";
 import Modal from "./components/Modal";
 import { DATA } from "./assets/Data";
 import { useState } from "react";
-import styled from "styled-components";
+
 import Header from "./components/Header";
 
 function App() {
