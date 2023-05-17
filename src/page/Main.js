@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Movie from "../components/Movie";
 
 const Main = ({ data }) => {
-  console.log(window.scrollX);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
@@ -46,12 +46,17 @@ const Main = ({ data }) => {
       <ImgBox href="#" item={currentIndex}>
         {data.map((item) => {
           return (
-            <Movie
-              item={item}
-              key={item.rank}
-              slide={currentIndex}
-              setSlide={setCurrentIndex}
-            />
+            <Link
+              to={`/movies/${item.rank}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Movie
+                item={item}
+                key={item.rank}
+                slide={currentIndex}
+                setSlide={setCurrentIndex}
+              />
+            </Link>
           );
         })}
       </ImgBox>
