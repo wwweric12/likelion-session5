@@ -13,10 +13,14 @@ import MoviesInfo from "./components/MoviesInfo";
 
 function App() {
   const [login, setLogin] = useState(false);
+  const [signUp, setSignUp] = useState(false);
   const [moviePage, setMoviePage] = useState(true);
   const sortHeader = useLocation();
   const handleLogin = () => {
     setLogin((prev) => !prev);
+  };
+  const handleSignUp = () => {
+    setSignUp((prev) => !prev);
   };
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -31,6 +35,7 @@ function App() {
     <>
       <Header
         login={handleLogin}
+        signUp={handleSignUp}
         moviePage={moviePage}
         sortHeader={sortHeader}
       />
@@ -39,7 +44,10 @@ function App() {
         <Route path="/movies/:id" element={<MoviesDesc data={DATA} />} />
         <Route path="/movies/:id/overview" element={<MoviesInfo />} />
       </Routes>
-      {login && <Modal login={handleLogin} isLogin={login} />}
+      {login && <Modal id="login" ModalSort={handleLogin} ModalData={login} />}
+      {signUp && (
+        <Modal id="signUp" ModalSort={handleSignUp} ModalData={signUp} />
+      )}
     </>
   );
 }

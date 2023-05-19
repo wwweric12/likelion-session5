@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/icon_logo.png";
 
-export default function Header({ login, moviePage, sortHeader }) {
-  const handleClick = () => {
-    login();
+export default function Header({ login, signUp, moviePage, sortHeader }) {
+  const handleClick = (e) => {
+    if (e.target.id === "Login") {
+      login();
+    } else {
+      signUp();
+    }
   };
-  sortHeader.pathname.includes("movies") &&
-    sortHeader.pathname.includes("overview");
+
   return (
     <HeaderContainer
       headerColor={moviePage}
@@ -69,6 +72,7 @@ export default function Header({ login, moviePage, sortHeader }) {
             headerColor={moviePage}
             onClick={handleClick}
             current={sortHeader.pathname.substr(0, 8) === "/movies/"}
+            id="Login"
           >
             로그인
           </HeaderButton>
@@ -77,6 +81,8 @@ export default function Header({ login, moviePage, sortHeader }) {
           <SignUpButton
             headerColor={moviePage}
             current={sortHeader.pathname.substr(0, 8) === "/movies/"}
+            onClick={handleClick}
+            id="signUp"
           >
             회원가입
           </SignUpButton>

@@ -4,32 +4,25 @@ import line from "../assets/image/icon_line.png";
 import twitter from "../assets/image/icon_twitter.png";
 import google from "../assets/image/icon_google.png";
 import styled from "styled-components";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
-const Modal = ({ login, isLogin }) => {
+const Modal = ({ id, ModalSort, ModalData }) => {
   const handleClosed = () => {
-    login();
+    ModalSort();
   };
+
   return (
-    <BackgroundModel login={isLogin}>
+    <BackgroundModel login={ModalData}>
       <Model>
         <CloseButton onClick={handleClosed}>X</CloseButton>
         <LogoImg></LogoImg>
-        <LoginText>로그인</LoginText>
-        <LoginForm>
-          <LoginInput placeholder="이메일"></LoginInput>
-          <LoginInput placeholder="비밀번호"></LoginInput>
-          <LoginButton>로그인</LoginButton>
-        </LoginForm>
-        <LoginLink href="#">비밀번호를 잊어버리셨나요?</LoginLink>
-        <p>
-          계정이 없으신가요?<LoginLink href="#"> 회원가입</LoginLink>
-        </p>
+        {id === "login" ? <Login /> : <SignUp />}
         <LineContainer>
           <Line></Line>
           <div>OR</div>
           <Line></Line>
         </LineContainer>
-
         <LoginImgUl>
           <LoginImgLi>
             <LoginImgButton>
@@ -86,51 +79,12 @@ const Model = styled.div`
   padding: 10px 10px;
   background-color: white;
 `;
-
 const LogoImg = styled.img.attrs({
   src: `${logo}`,
 })`
   width: 198px;
   height: auto;
   margin-bottom: 20px;
-`;
-
-const LoginText = styled.h2`
-  font-size: 18px;
-  margin-bottom: 20px;
-`;
-
-const LoginForm = styled.form`
-  width: 335px;
-`;
-const LoginInput = styled.input`
-  display: flex;
-  width: 100%;
-  height: 44px;
-  background: rgb(245, 245, 245);
-  border: none;
-  border-radius: 3px;
-  margin-bottom: 8px;
-  padding: 10px;
-`;
-
-const LoginButton = styled.button`
-  width: 100%;
-  height: 44px;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  background: rgb(255, 47, 110);
-  margin-bottom: 20px;
-`;
-
-const LoginLink = styled.a`
-  font-size: 18px;
-  color: rgb(255, 47, 110);
-  text-decoration: none;
-  margin-bottom: 16px;
 `;
 
 const Line = styled.div`
@@ -179,5 +133,6 @@ const CloseButton = styled.button`
   height: 30px;
   border: none;
   align-self: end;
+
   margin: 0 20px 20px 0;
 `;
