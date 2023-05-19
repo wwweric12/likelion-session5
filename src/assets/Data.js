@@ -23,7 +23,7 @@ export const DATA = [
   {
     rank: 2,
     img: poster2,
-    title: "슈퍼 마리오 브라더ㅅ",
+    title: "슈퍼 마리오 브라더스",
     year: "2023",
     country: "미국",
     average: "3.4",

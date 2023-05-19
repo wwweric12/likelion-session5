@@ -1,14 +1,21 @@
 import "./App.css";
-import RandomClass from "./scss/RandomClass";
-import Button from "./scss/Button";
-import Circle from "./styled-components/Circle";
+import Main from "./page/Main";
+import Modal from "./components/Modal";
+import { DATA } from "./assets/Data";
+import { useState } from "react";
+
+import Header from "./components/Header";
 
 function App() {
+  const [login, setLogin] = useState(false);
+  const handleLogin = () => {
+    setLogin((prev) => !prev);
+  };
   return (
     <>
-      <RandomClass>Button</RandomClass>
-      <Button>Button</Button>
-      <Circle />
+      <Header login={handleLogin} />
+      <Main data={DATA} />
+      {login && <Modal login={handleLogin} isLogin={login} />}
     </>
   );
 }
