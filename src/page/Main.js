@@ -3,22 +3,24 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Movie from "../components/Movie";
+import axios from "axios";
 
-const Main = ({ data }) => {
+const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
+  const [data, setData] = useState([]);
 
   const handlePrev = () => {
     window.scrollTo({
-      left: 0,
+      left: window.scrollX - 1408,
       behavior: "smooth",
     });
   };
 
   const handleNext = () => {
     window.scrollTo({
-      left: 1908,
+      left: window.scrollX + 1408,
       behavior: "smooth",
     });
   };
@@ -27,7 +29,7 @@ const Main = ({ data }) => {
       if (window.scrollX <= 10) {
         setShowLeftButton(true);
         setShowRightButton(false);
-      } else if (window.scrollX >= 1000) {
+      } else if (window.scrollX >= 4200) {
         setShowLeftButton(false);
         setShowRightButton(true);
       } else {
@@ -35,6 +37,14 @@ const Main = ({ data }) => {
         setShowRightButton(false);
       }
     });
+
+    axios
+      .get("https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1", {
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+        },
+      })
+      .then((response) => setData(response.data.results));
   }, []);
 
   return (
@@ -44,15 +54,17 @@ const Main = ({ data }) => {
         ⬅️
       </PrevButton>
       <ImgBox href="#" item={currentIndex}>
-        {data.map((item) => {
+        {data.map((item, index) => {
           return (
             <Link
-              to={`/movies/${item.rank}`}
+              to={`/movies/${item.id}/${index + 1}`}
               style={{ textDecoration: "none" }}
+              key={index}
             >
               <Movie
                 item={item}
-                key={item.rank}
+                rank={index}
+                key={item.id}
                 slide={currentIndex}
                 setSlide={setCurrentIndex}
               />

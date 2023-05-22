@@ -1,9 +1,8 @@
 import "./App.css";
 import Main from "./page/Main";
 import Modal from "./components/Modal";
-import { DATA } from "./assets/Data";
-import { useEffect, useState } from "react";
 
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
@@ -16,6 +15,7 @@ function App() {
   const [signUp, setSignUp] = useState(false);
   const [moviePage, setMoviePage] = useState(true);
   const sortHeader = useLocation();
+
   const handleLogin = () => {
     setLogin((prev) => !prev);
   };
@@ -31,6 +31,7 @@ function App() {
       }
     });
   }, []);
+
   return (
     <>
       <Header
@@ -40,8 +41,8 @@ function App() {
         sortHeader={sortHeader}
       />
       <Routes>
-        <Route path="/" element={<Main data={DATA} />} />
-        <Route path="/movies/:id" element={<MoviesDesc data={DATA} />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/movies/:id/:rank" element={<MoviesDesc />} />
         <Route path="/movies/:id/overview" element={<MoviesInfo />} />
       </Routes>
       {login && <Modal id="login" ModalSort={handleLogin} ModalData={login} />}
