@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   ModalText,
   ModalForm,
@@ -13,8 +11,8 @@ export default function Login() {
     <>
       <ModalText>로그인</ModalText>
       <ModalForm>
-        <ModalInput placeholder="이메일"></ModalInput>
-        <ModalInput placeholder="비밀번호"></ModalInput>
+        <ModalInput placeholder="이메일" />
+        <ModalInput placeholder="비밀번호" />
         <ModalButton>로그인</ModalButton>
       </ModalForm>
       <ModalLink href="#">비밀번호를 잊어버리셨나요?</ModalLink>

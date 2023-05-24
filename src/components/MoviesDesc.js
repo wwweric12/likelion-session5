@@ -125,7 +125,7 @@ const ImgBackground = styled.div`
     rgba(20, 20, 20, 0.5) 67%,
     #141414 98%
   );
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Zindex.above};
 `;
 
 const ImageBox = styled.div`
@@ -146,7 +146,7 @@ const MovieProfile = styled.ul`
   display: flex;
   width: 100%;
   height: 33px;
-  z-index: 5;
+  z-index: ${({ theme }) => theme.Zindex.above};
   color: white;
   list-style: none;
   font-size: 14px;
@@ -175,7 +175,7 @@ const MovieImage = styled.img`
   position: absolute;
   top: 370px;
   left: 230px;
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Zindex.above};
 `;
 
 const MovieDesc = styled.div`

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export default function Movie({ item, rank }) {
@@ -28,7 +27,7 @@ const ImageBox = styled.div`
   margin-right: 40px;
   flex: none;
   color: black;
-  z-index: -1;
+  z-index: ${({ theme }) => theme.Zindex.below};
 `;
 
 const RankBox = styled.div`
@@ -40,7 +39,7 @@ const RankBox = styled.div`
   left: 7px;
   width: 30px;
   height: 30px;
-  z-index: 10;
+  z-index: ${({ theme }) => theme.Zindex.above};
   border-radius: 3px;
   background-color: black;
   color: white;
@@ -81,6 +80,6 @@ const MovieDesc = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  z-index: -1;
+  z-index: ${({ theme }) => theme.Zindex.below};
   position: relative;
 `;

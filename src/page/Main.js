@@ -59,12 +59,11 @@ const Main = () => {
             <Link
               to={`/movies/${item.id}/${index + 1}`}
               style={{ textDecoration: "none" }}
-              key={index}
+              key={item.id}
             >
               <Movie
                 item={item}
                 rank={index}
-                key={item.id}
                 slide={currentIndex}
                 setSlide={setCurrentIndex}
               />
@@ -104,7 +103,7 @@ const ImgBox = styled.div`
 const PrevButton = styled.button`
   position: fixed;
   margin-top: 200px;
-  z-index: 10;
+  z-index: ${({ theme }) => theme.Zindex.toAbove};
   left: 10px;
   width: 40px;
   height: 40px;
@@ -119,7 +118,7 @@ const PrevButton = styled.button`
 
 const NextButton = styled.button`
   position: fixed;
-  z-index: 10;
+  z-index: ${({ theme }) => theme.Zindex.toAbove};
   margin-top: 200px;
   display: ${(prop) => (prop.item ? "none" : "inline")};
   right: 10px;
