@@ -1,24 +1,19 @@
-import React from "react";
 import styled from "styled-components";
 
-export default function Movie({ item }) {
-  const { rank, img, title, year, country, average, percent, audience } = item;
-
+export default function Movie({ item, rank }) {
   return (
     <>
       <ImageBox>
         <ImgContainer>
-          <RankBox>{rank}</RankBox>
-          <MovieImg src={img}></MovieImg>
+          <RankBox>{rank + 1}</RankBox>
+          <MovieImg
+            src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+          ></MovieImg>
         </ImgContainer>
-        <MovieTitle>{title}</MovieTitle>
-        <MovieDate>
-          {year} ∙ {country}
-        </MovieDate>
-        <MovieDesc>평균: ★{average}</MovieDesc>
-        <MovieDesc>
-          예메율:{percent} ∙ 누적관객:{audience}
-        </MovieDesc>
+        <MovieTitle>{item.title}</MovieTitle>
+        <MovieDate>{item.release_date}</MovieDate>
+        <MovieDesc>평균: ★{item.vote_average}</MovieDesc>
+        <MovieDesc>예메율:{item.vote_count} ∙ 누적관객:</MovieDesc>
       </ImageBox>
     </>
   );
@@ -32,7 +27,7 @@ const ImageBox = styled.div`
   margin-right: 40px;
   flex: none;
   color: black;
-  z-index: -1;
+  z-index: ${({ theme }) => theme.Zindex.below};
 `;
 
 const RankBox = styled.div`
@@ -44,7 +39,7 @@ const RankBox = styled.div`
   left: 7px;
   width: 30px;
   height: 30px;
-  z-index: 10;
+  z-index: ${({ theme }) => theme.Zindex.above};
   border-radius: 3px;
   background-color: black;
   color: white;
@@ -85,6 +80,6 @@ const MovieDesc = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  z-index: -1;
+  z-index: ${({ theme }) => theme.Zindex.below};
   position: relative;
 `;

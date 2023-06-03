@@ -61,7 +61,7 @@ const BackgroundModel = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 98;
+  z-index: ${({ theme }) => theme.Zindex.above};
   background-color: ${({ login }) => (login ? "rgba(0, 0, 0, 0.56)" : "")};
 `;
 
@@ -75,7 +75,7 @@ const Model = styled.div`
   border-radius: 6px;
   margin: 100px auto;
   overflow: hidden;
-  z-index: 100;
+  z-index: ${({ theme }) => theme.Zindex.above};
   padding: 10px 10px;
   background-color: white;
 `;

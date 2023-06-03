@@ -4,6 +4,7 @@ import styled from "styled-components";
 import logo from "../assets/image/icon_logo.png";
 
 export default function Header({ login, signUp, moviePage, sortHeader }) {
+  const isCurrent = sortHeader.pathname.substr(0, 8) === "/movies/";
   const handleClick = (e) => {
     if (e.target.id === "Login") {
       login();
@@ -13,48 +14,30 @@ export default function Header({ login, signUp, moviePage, sortHeader }) {
   };
 
   return (
-    <HeaderContainer
-      headerColor={moviePage}
-      current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-    >
-      <HeaderUl
-        headerColor={moviePage}
-        current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-      >
+    <HeaderContainer headerColor={moviePage} current={isCurrent}>
+      <HeaderUl headerColor={moviePage} current={isCurrent}>
         <li>
           <Link to="/">
             <TitleLogo />
           </Link>
         </li>
         <li>
-          <HeaderButton
-            headerColor={moviePage}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-          >
+          <HeaderButton headerColor={moviePage} current={isCurrent}>
             영화
           </HeaderButton>
         </li>
         <li>
-          <HeaderButton
-            headerColor={moviePage}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-          >
+          <HeaderButton headerColor={moviePage} current={isCurrent}>
             TV
           </HeaderButton>
         </li>
         <li>
-          <HeaderButton
-            headerColor={moviePage}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-          >
+          <HeaderButton headerColor={moviePage} current={isCurrent}>
             책
           </HeaderButton>
         </li>
         <li>
-          <HeaderButton
-            headerColor={moviePage}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
-          >
+          <HeaderButton headerColor={moviePage} current={isCurrent}>
             웹툰
           </HeaderButton>
         </li>
@@ -63,7 +46,7 @@ export default function Header({ login, signUp, moviePage, sortHeader }) {
             <HeaderInput
               headerColor={moviePage}
               placeholder="콘텐츠,인물,컨텐츠,유저를 검색해보세요"
-              current={sortHeader.pathname.substr(0, 8) === "/movies/"}
+              current={isCurrent}
             ></HeaderInput>
           </HeaderForm>
         </li>
@@ -71,7 +54,7 @@ export default function Header({ login, signUp, moviePage, sortHeader }) {
           <HeaderButton
             headerColor={moviePage}
             onClick={handleClick}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
+            current={isCurrent}
             id="Login"
           >
             로그인
@@ -80,7 +63,7 @@ export default function Header({ login, signUp, moviePage, sortHeader }) {
         <li>
           <SignUpButton
             headerColor={moviePage}
-            current={sortHeader.pathname.substr(0, 8) === "/movies/"}
+            current={isCurrent}
             onClick={handleClick}
             id="signUp"
           >
@@ -101,7 +84,7 @@ const HeaderContainer = styled.header`
   justify-content: center;
   align-items: center;
   border-bottom: solid 1px gray;
-  z-index: 3;
+  z-index: ${({ theme }) => theme.Zindex.toAbove};
   background-color: ${(props) =>
     props.headerColor && props.current ? "transparent" : "white"};
 `;

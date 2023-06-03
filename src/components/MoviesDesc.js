@@ -1,75 +1,100 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-export default function MoviesDesc({ data }) {
+export default function MoviesDesc() {
+  const [movieData, setMovieData] = useState();
+
   const params = useParams();
-  const movie = data.filter((item) => item.rank === Number(params.id))[0];
+
+  useEffect(() => {
+    axios
+      .get(`https://api.themoviedb.org/3/movie/${params.id}?language=ko-KR`, {
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+        },
+      })
+      .then((response) => setMovieData(response.data));
+  }, [params.id]);
 
   return (
-    <MoviesPage>
-      <ContentBox>
-        <ImageBox>
-          <ImageLeftBox color={movie.left}></ImageLeftBox>
-          <BackgroundMovieImg src={movie.image}></BackgroundMovieImg>
-          <ImageRightBox color={movie.right}></ImageRightBox>
-        </ImageBox>
-        <ImgBackground />
+    <>
+      {movieData && (
+        <MoviesPage>
+          <ContentBox>
+            <ImageBox>
+              <BackgroundMovieImg
+                src={`https://image.tmdb.org/t/p/w500${movieData.backdrop_path}`}
+              ></BackgroundMovieImg>
+            </ImageBox>
+            <ImgBackground />
 
-        <MovieProfile>
-          <MovieRank>
-            예메순위:
-            <span>
-              {movie.rank}위 ({movie.percent})
-            </span>
-          </MovieRank>
-          <MovieAudience>
-            누적관객:<span>{movie.audience}</span>
-          </MovieAudience>
-        </MovieProfile>
-      </ContentBox>
-      <MovieImage src={movie.img}></MovieImage>
-      <MovieDesc>
-        <MovieTitle>{movie.title}</MovieTitle>
-        <MovieDetail>
-          {movie.year} ・ {movie.genre} ・ {movie.country}
-        </MovieDetail>
-        <MovieRating>평균 ★ {movie.average}</MovieRating>
-        <MovieActionBox>
-          <MovieStarBox>
-            평가하기
-            <MovieStar>✩✩✩✩✩</MovieStar>
-          </MovieStarBox>
-          <MovieLine></MovieLine>
-          <MovieButtonBox>
-            <MovieButton>✚ 보고싶어요</MovieButton>
-            <MovieButton>✏️ 코맨트</MovieButton>
-            <MovieButton>👁️ 보는중</MovieButton>
-            <MovieButton>・・・ 더보기</MovieButton>
-          </MovieButtonBox>
-        </MovieActionBox>
-      </MovieDesc>
-      <MovieSection>
-        <MovieInfo>
-          <MovieInfoHeader>
-            <InfoTitle>기본정보</InfoTitle>
-            <Link to={`/movies/${movie.rank}/overview`}>
-              <MoreButton>더보기</MoreButton>
-            </Link>
-          </MovieInfoHeader>
-          <DescDetails>
-            <DescTitle>{movie.originalTitle}</DescTitle>
-            <DescDetail>
-              {movie.year} ・ {movie.genre} ・ {movie.country}
-            </DescDetail>
-            <DescTime>
-              {movie.runningTime} ・ {movie.age}
-            </DescTime>
-            <DescContent>{movie.description}</DescContent>
-          </DescDetails>
-        </MovieInfo>
-      </MovieSection>
-    </MoviesPage>
+            <MovieProfile>
+              <MovieRank>
+                예메순위:
+                <span>
+                  {params.rank}위 ({movieData.vote_average})
+                </span>
+              </MovieRank>
+              <MovieAudience>
+                누적관객:<span>{movieData.popularity}</span>
+              </MovieAudience>
+            </MovieProfile>
+          </ContentBox>
+          <MovieImage
+            src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
+          ></MovieImage>
+          <MovieDesc>
+            <MovieTitle>{movieData.title}</MovieTitle>
+            <MovieDetail>
+              {movieData.release_date}・{" "}
+              {movieData.genres.map((item) => `${item.name} \n  `)}
+              {movieData.production_countries[0]
+                ? movieData.production_countries[0].name
+                : ""}
+            </MovieDetail>
+            <MovieRating>평균 ★ {movieData.vote_average}</MovieRating>
+            <MovieActionBox>
+              <MovieStarBox>
+                평가하기
+                <MovieStar>✩✩✩✩✩</MovieStar>
+              </MovieStarBox>
+              <MovieLine></MovieLine>
+              <MovieButtonBox>
+                <MovieButton>✚ 보고싶어요</MovieButton>
+                <MovieButton>✏️ 코맨트</MovieButton>
+                <MovieButton>👁️ 보는중</MovieButton>
+                <MovieButton>・・・ 더보기</MovieButton>
+              </MovieButtonBox>
+            </MovieActionBox>
+          </MovieDesc>
+          <MovieSection>
+            <MovieInfo>
+              <MovieInfoHeader>
+                <InfoTitle>기본정보</InfoTitle>
+                <Link to={`/movies/${movieData.rank}/overview`}>
+                  <MoreButton>더보기</MoreButton>
+                </Link>
+              </MovieInfoHeader>
+              <DescDetails>
+                <DescTitle>{movieData.originalTitle}</DescTitle>
+                <DescDetail>
+                  {movieData.release_date} ・{" "}
+                  {movieData.genres.map((item) => `${item.name} \n  `)} ・
+                  {movieData.production_countries[0]
+                    ? movieData.production_countries[0].name
+                    : ""}
+                </DescDetail>
+                <DescTime>{movieData.runtime}분</DescTime>
+                <DescContent>{movieData.overview}</DescContent>
+              </DescDetails>
+            </MovieInfo>
+          </MovieSection>
+        </MoviesPage>
+      )}
+    </>
   );
 }
 
@@ -100,7 +125,7 @@ const ImgBackground = styled.div`
     rgba(20, 20, 20, 0.5) 67%,
     #141414 98%
   );
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Zindex.above};
 `;
 
 const ImageBox = styled.div`
@@ -117,29 +142,11 @@ const BackgroundMovieImg = styled.img`
   width: 100%;
 `;
 
-const ImageLeftBox = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 110px;
-
-  background-image: ${(props) => props.color};
-`;
-const ImageRightBox = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 110px;
-  background-image: ${(props) => props.color};
-`;
-
 const MovieProfile = styled.ul`
   display: flex;
   width: 100%;
   height: 33px;
-  z-index: 5;
+  z-index: ${({ theme }) => theme.Zindex.above};
   color: white;
   list-style: none;
   font-size: 14px;
@@ -168,7 +175,7 @@ const MovieImage = styled.img`
   position: absolute;
   top: 370px;
   left: 230px;
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Zindex.above};
 `;
 
 const MovieDesc = styled.div`
@@ -266,6 +273,7 @@ const MovieInfo = styled.div`
   height: 400px;
   padding: 8px 30px;
   background-color: white;
+  border: 1px solid rgb(227, 227, 227) !important;
   border-radius: 3px;
 `;
 
