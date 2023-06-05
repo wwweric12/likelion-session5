@@ -2,21 +2,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { similarMovie } from "../atom/similarMovie";
+import { Instance, instance } from "../axios/axiosInstance";
 
 export default function MoviesDesc() {
   const [movieData, setMovieData] = useState();
-
+  const recommand = useRecoilValue(similarMovie);
   const params = useParams();
 
   useEffect(() => {
-    axios
-      .get(`https://api.themoviedb.org/3/movie/${params.id}?language=ko-KR`, {
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-        },
-      })
-      .then((response) => setMovieData(response.data));
+    Instance.get(
+      `https://api.themoviedb.org/3/movie/${params.id}?language=ko-KR`
+    ).then((response) => setMovieData(response.data));
   }, [params.id]);
 
   return (
@@ -27,7 +26,7 @@ export default function MoviesDesc() {
             <ImageBox>
               <BackgroundMovieImg
                 src={`https://image.tmdb.org/t/p/w500${movieData.backdrop_path}`}
-              ></BackgroundMovieImg>
+              />
             </ImageBox>
             <ImgBackground />
 
@@ -90,6 +89,28 @@ export default function MoviesDesc() {
                 <DescTime>{movieData.runtime}분</DescTime>
                 <DescContent>{movieData.overview}</DescContent>
               </DescDetails>
+            </MovieInfo>
+            <MovieInfo>
+              <InfoTitle>비슷한작품</InfoTitle>
+              <RecommandedMovies>
+                {recommand.map((item, index) => (
+                  <Link
+                    to={`/movies/${item.id}/${index + 1}`}
+                    style={{ textDecoration: "none" }}
+                    key={item.id}
+                  >
+                    <RecommandedMovie>
+                      <RecommandedMovieImg
+                        src={`https:image.tmdb.org/t/p/w500${item.backdrop_path} `}
+                      />
+                      <RecommandedTitle>{item.title}</RecommandedTitle>
+                      <RecommandedDetail>
+                        평균 ★{item.vote_average}
+                      </RecommandedDetail>
+                    </RecommandedMovie>
+                  </Link>
+                ))}
+              </RecommandedMovies>
             </MovieInfo>
           </MovieSection>
         </MoviesPage>
@@ -270,8 +291,9 @@ const MovieSection = styled.section`
 
 const MovieInfo = styled.div`
   width: 730px;
-  height: 400px;
+  height: auto;
   padding: 8px 30px;
+  margin-bottom: 30px;
   background-color: white;
   border: 1px solid rgb(227, 227, 227) !important;
   border-radius: 3px;
@@ -317,4 +339,47 @@ const DescTime = styled.div`
 `;
 const DescContent = styled.div`
   margin-top: 20px;
+`;
+
+const RecommandedMovies = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+`;
+
+const RecommandedMovie = styled.div`
+  width: 150px;
+  height: 300px;
+  cursor: pointer;
+`;
+
+const RecommandedMovieImg = styled.img`
+  width: 140px;
+  height: 200px;
+  margin: 10px 5px;
+  border-radius: 5px;
+`;
+
+const RecommandedTitle = styled.h1`
+  color: rgb(41, 42, 50);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  line-height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const RecommandedDetail = styled.p`
+  color: rgb(120, 120, 120);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  line-height: 18px;
+  white-space: nowrap;
+  height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

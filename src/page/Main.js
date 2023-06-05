@@ -3,13 +3,17 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Movie from "../components/Movie";
-import axios from "axios";
+
+import { useRecoilState } from "recoil";
+import { similarMovie } from "../atom/similarMovie";
+import { Instance } from "../axios/axiosInstance";
 
 const Main = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
   const [data, setData] = useState([]);
+  const [similarMovies, setSimilarMovies] = useRecoilState(similarMovie);
 
   const handlePrev = () => {
     window.scrollTo({
@@ -38,13 +42,12 @@ const Main = () => {
       }
     });
 
-    axios
-      .get("https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1", {
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-        },
-      })
-      .then((response) => setData(response.data.results));
+    Instance.get(
+      "https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1"
+    ).then((response) => setData(response.data.results));
+    Instance.get(
+      "https://api.themoviedb.org/3/movie/top_rated?language=ko-KR"
+    ).then((res) => setSimilarMovies(res.data.results));
   }, []);
 
   return (
